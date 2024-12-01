@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, request, url_for, redirect, flash
 from app.db_connect import get_db
 from yfinance import Ticker
 import pandas as pd
+import matplotlib.pyplot as plt
+import os
 
 tickers = Blueprint('tickers', __name__)
 
@@ -94,6 +96,40 @@ def update_all_tickers():
     db.commit()
     flash('All tickers updated successfully!', 'success')
     return redirect(url_for('tickers.ticker'))
+
+
+
+@tickers.route('/ticker_chart/<string:ticker_symbol>', methods=['GET'])
+def ticker_chart(ticker_symbol):
+    # Fetch historical data for the last day (with a 5-minute interval)
+    ticker = Ticker(ticker_symbol)
+    try:
+        history = ticker.history(period='1d', interval='5m')
+        if history.empty:
+            flash(f'No data found for ticker symbol {ticker_symbol}.', 'danger')
+            return redirect(url_for('tickers.ticker'))
+    except Exception as e:
+        flash(f'Failed to retrieve stock price for {ticker_symbol}: {str(e)}', 'danger')
+        return redirect(url_for('tickers.ticker'))
+
+    # Plotting the high and low prices throughout the day
+    plot_path = os.path.join('app', 'static', 'images', f'{ticker_symbol}_high_low.png')
+    plt.figure(figsize=(12, 6))
+    plt.plot(history.index, history['High'], label='High Price', color='green')
+    plt.plot(history.index, history['Low'], label='Low Price', color='red')
+    plt.xlabel('Time')
+    plt.ylabel('Prices')
+    plt.title(f'High and Low Prices for {ticker_symbol} (Last Day)')
+    plt.xticks(rotation=45)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(plot_path)
+    plt.close()
+
+    # Render template with chart
+    return render_template('ticker_chart.html', ticker_symbol=ticker_symbol)
+
+################################
 
 # Function to get the latest stock price using yfinance
 def get_stock_price(ticker_symbol):

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>High and Low Prices for {{ ticker_symbol }}</h1>
+
+    <!-- Chart displaying high and low prices for the last day -->
+    <div class="mt-4">
+        <img src="{{ url_for('static', filename='images/' + ticker_symbol + '_high_low.png') }}" 
+             alt="High-Low Price Chart" 
+             class="img-fluid">
+    </div>
+
+    <br>
+    <button type="button" class="btn btn-secondary" 
+            onclick="window.location.href='{{ url_for('tickers.ticker') }}'">
+        Back to Tickers
+    </button>
+</div>
+{% endblock %}

@@ -31,6 +31,14 @@
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteTickerModal{{ ticker['ticker_id'] }}">
                         Delete
                     </button>
+                    {% for ticker in tickers %}
+                <a href="{{ url_for('tickers.ticker_chart', ticker_symbol=ticker['ticker_symbol']) }}" class="btn btn-info">
+    Show Chart
+</a>
+
+
+{% endfor %}
+
                 </td>
             </tr>
 
