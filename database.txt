@@ -1,0 +1,19 @@
+Table accounts {
+    account_id int [primary key, auto increment]
+    account_name varchar(45)
+}
+
+Table tickers {
+    ticker_id int [primary key, auto increment]
+    ticker_symbol varchar(45)
+    current_price decimal(10,4)
+}
+
+Table transactions {
+    transaction_id int [primary key, auto increment]
+    transaction_date date
+    quantity decimal(10,4)
+    price_paid decimal(10,4)
+    ticker_id int [ref: > tickers.ticker_id]
+    account_id int [ref: > accounts.account_id]
+}
