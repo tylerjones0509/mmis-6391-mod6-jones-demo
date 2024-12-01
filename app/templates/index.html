@@ -2,8 +2,45 @@
 
 {% block content %}
 
-<h1>Module 3 - Runners Example</h1>
-<br>
-<h3 style="color: red;">Total Portfolio Value is ${{ "{:,.2f}".format(total_portfolio_value) }}</h3>
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Portfolio Dashboard</h1>
+
+    <div class="row">
+        <!-- Total Portfolio Value Card -->
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Total Portfolio Value</div>
+                <div class="card-body">
+                    <h5 class="card-title">${{ "{:,.2f}".format(total_portfolio_value) }}</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Portfolio Costs Card -->
+        <div class="col-md-4">
+            <div class="card text-white bg-secondary mb-3">
+                <div class="card-header">Total Portfolio Costs</div>
+                <div class="card-body">
+                    <h5 class="card-title">${{ "{:,.2f}".format(total_portfolio_costs) }}</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change in Portfolio Value Card -->
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Change in Value</div>
+                <div class="card-body">
+                    <h5 class="card-title">${{ "{:,.2f}".format(change) }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optionally, add a summary or description below -->
+    <div class="text-center mt-4">
+        <p>The total portfolio value represents the current value of all your investments, while the total portfolio costs show your initial investments. The change in value indicates the net gain or loss.</p>
+    </div>
+</div>
 
 {% endblock %}
